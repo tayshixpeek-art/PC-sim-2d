@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Intel Core i3", "type": "cpu", "price": 100 },
+  { "id": 2, "name": "GTX 1050 Ti", "type": "gpu", "price": 150 },
+  { "id": 3, "name": "Motherboard Basic", "type": "motherboard", "price": 50 },
+  { "id": 4, "name": "RAM 8GB", "type": "ram", "price": 30 },
+  { "id": 5, "name": "PSU 400W", "type": "psu", "price": 30 },
+  { "id": 6, "name": "AMD Ryzen 9050x", "type": "cpu", "price": 900 },
+  { "id": 7, "name": "NVIDIA RTX 5090", "type": "gpu", "price": 2500 },
+  { "id": 8, "name": "RAM 64GB Pro", "type": "ram", "price": 400 },
+  { "id": 9, "name": "Motherboard X999", "type": "motherboard", "price": 300 },
+  { "id": 10, "name": "PSU 1500W Platinum", "type": "psu", "price": 200 }
+]

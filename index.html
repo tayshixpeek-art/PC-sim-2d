@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PC Builder Tycoon</title>
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo">PC Sim <span id="player-name-display" style="font-size:10px; color:#bdc3c7;"></span></div>
+        <div class="balance">💰 <span id="money">230</span> $</div>
+        <a href="about.html" class="info-btn">?</a>
+    </header>
+
+    <div id="shopModal" class="modal">
+        <div class="modal-content shop-content">
+            <span class="close-btn" onclick="closeShopModal()">&times;</span>
+            <h2>🛒 Комплектующие</h2>
+            
+            <div class="shop-tabs">
+                <button class="tab-btn active" onclick="filterShop('cpu')">CPU</button>
+                <button class="tab-btn" onclick="filterShop('gpu')">GPU</button>
+                <button class="tab-btn" onclick="filterShop('motherboard')">Мать</button>
+                <button class="tab-btn" onclick="filterShop('ram')">RAM</button>
+                <button class="tab-btn" onclick="filterShop('storage')">SSD</button>
+                <button class="tab-btn" onclick="filterShop('cooler')">Кулер</button>
+                <button class="tab-btn" onclick="filterShop('psu')">БП</button>
+            </div>
+            
+            <p>Баланс: <span id="shopMoney" style="color: green;">230</span> $</p>
+            <div class="shop-grid" id="shop-container"></div>
+        </div>
+    </div>
+
+    <h1>Мастерская</h1>
+    <div id="status">Перетащи детали в корпус!</div>
+
+    <div class="game-container">
+        
+        <button class="big-shop-btn" onclick="openShopModal()">🛍️ МАГАЗИН</button>
+
+        <div class="bottom-panel-area">
+            <div class="workbench" id="workbench-container"></div>
+            
+            <div id="monitor" class="monitor">
+                <div id="boot-screen" class="screen-content">
+                    <div class="loader"></div>
+                    <div style="text-align: left; width: 80%;">
+                        <h3 style="color: #2ecc71; margin: 0;">BIOS v2.4</h3>
+                        <p style="color: #fff; font-size: 10px; margin: 2px;">Checking RAM... OK</p>
+                        <p style="color: #fff; font-size: 10px; margin: 2px;">Loading OS...</p>
+                    </div>
+                </div>
+                
+                <div id="desktop" class="screen-content" style="display: none;">
+                    <div class="app-icon" onclick="openApp('sys-window')">
+                        <div class="icon-box" style="color: #2980b9;">⚙️</div>
+                        <span>System</span>
+                    </div>
+                    <div class="app-icon" onclick="openApp('miner-window')">
+                        <div class="icon-box" style="background: #2c3e50; color: #f1c40f;">₿</div>
+                        <span>Miner</span>
+                    </div>
+                    <div class="app-icon" onclick="openApp('console-window')">
+                        <div class="icon-box" style="background: #000; color: #fff; border: 1px solid #555;">cmd</div>
+                        <span>Console</span>
+                    </div>
+                    
+                    <div id="sys-window" class="app-window" style="display: none;">
+                        <div class="app-header"><span>Info</span><span class="close-app" onclick="closeApp('sys-window')">❌</span></div>
+                        <div class="app-body"><p>Система работает стабильно.</p><p>Температура: 45°C</p></div>
+                    </div>
+
+                    <div id="miner-window" class="app-window miner-theme" style="display: none;">
+                        <div class="app-header"><span>Miner v3.0</span><span class="close-app" onclick="closeApp('miner-window')">❌</span></div>
+                        <div class="app-body">
+                            <div class="miner-stats">
+                                <p>Hashrate: <span id="hashrate" style="color: cyan;">0</span> MH/s</p>
+                                <p>Доход: <span id="income" style="color: lime;">0</span> $/сек</p>
+                            </div>
+                            <button class="mine-btn" onclick="toggleMining()">СТАРТ / СТОП</button>
+                        </div>
+                    </div>
+
+                    <div id="console-window" class="app-window console-theme" style="display: none;">
+                        <div class="app-header"><span>Command Prompt</span><span class="close-app" onclick="closeApp('console-window')">❌</span></div>
+                        <div class="app-body" id="console-body" onclick="document.getElementById('console-input').focus()">
+                            <div class="console-text">Microsoft Windows [Version 10.0.19045]</div>
+                            <br>
+                            <div id="console-history"></div>
+                            <div class="input-line">
+                                <span>C:\User\Admin></span>
+                                <input type="text" id="console-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-case compact">
+            <div class="case-interior">
+                <div class="slot" data-slot="motherboard">Материнка</div>
+                <div class="slot" data-slot="cpu">CPU</div>
+                <div class="slot" data-slot="cooler">Кулер</div>
+                <div class="slot" data-slot="ram">RAM</div>
+                <div class="slot" data-slot="gpu">Видеокарта</div>
+                <div class="slot" data-slot="storage">SSD/HDD</div>
+                <div class="slot" data-slot="psu">Блок Питания</div>
+            </div>
+            <button id="power-btn" class="power-btn disabled" onclick="turnOnPC()">🔌 Включить ПК</button>
+        </div>
+
+        <a href="about.html" class="bottom-game-info-btn">о игре</a>
+
+    </div>
+
+    <script src="js2/sounds.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Небольшой скрипт, чтобы показать имя пользователя из регистрации
+        const savedName = sessionStorage.getItem('userName');
+        if(savedName) document.getElementById('player-name-display').innerText = "| " + savedName;
+    </script>
+</body>
+</html>
