@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PC Builder Tycoon</title>
+    <title>PC Sim Online</title>
     <link rel="stylesheet" href="css/style.css">
     <script>
-        if (!sessionStorage.getItem('userName')) {
-            window.location.href = "login.html";
-        }
+        // Если нет ника, кидаем на вход
+        if (!sessionStorage.getItem('userName')) window.location.href = "login.html";
     </script>
 </head>
 <body>
@@ -23,7 +22,6 @@
         <div class="modal-content shop-content">
             <span class="close-btn" onclick="closeShopModal()">&times;</span>
             <h2>🛒 Комплектующие</h2>
-            
             <div class="shop-tabs">
                 <button class="tab-btn active" onclick="filterShop('cpu')">CPU</button>
                 <button class="tab-btn" onclick="filterShop('gpu')">GPU</button>
@@ -33,7 +31,6 @@
                 <button class="tab-btn" onclick="filterShop('cooler')">Кулер</button>
                 <button class="tab-btn" onclick="filterShop('psu')">БП</button>
             </div>
-            
             <p>Баланс: <span id="shopMoney" style="color: green;">1500</span> $</p>
             <div class="shop-grid" id="shop-container"></div>
         </div>
@@ -43,7 +40,6 @@
     <div id="status">Перетащи детали в корпус!</div>
 
     <div class="game-container">
-        
         <button class="big-shop-btn" onclick="openShopModal()">🛍️ МАГАЗИН</button>
 
         <div class="bottom-panel-area">
@@ -52,75 +48,38 @@
             <div id="monitor" class="monitor">
                 <div id="boot-screen" class="screen-content">
                     <div class="loader"></div>
-                    <div style="text-align: left; width: 80%;">
-                        <h3 style="color: #2ecc71; margin: 0;">BIOS v2.4</h3>
-                        <p style="color: #fff; font-size: 10px; margin: 2px;">Checking RAM... OK</p>
-                        <p style="color: #fff; font-size: 10px; margin: 2px;">Loading OS...</p>
-                    </div>
+                    <div><h3 style="color:#2ecc71;">BIOS v2.4</h3><p>Loading OS...</p></div>
                 </div>
                 
                 <div id="desktop" class="screen-content" style="display: none;">
-                    <div class="app-icon" onclick="openApp('sys-window')">
-                        <div class="icon-box" style="color: #2980b9;">⚙️</div>
-                        <span>System</span>
-                    </div>
-                    <div class="app-icon" onclick="openApp('miner-window')">
-                        <div class="icon-box" style="background: #2c3e50; color: #f1c40f;">₿</div>
-                        <span>Miner</span>
-                    </div>
-                    <div class="app-icon" onclick="openApp('console-window')">
-                        <div class="icon-box" style="background: #000; color: #fff; border: 1px solid #555;">cmd</div>
-                        <span>Console</span>
-                    </div>
+                    <div class="app-icon" onclick="openApp('sys-window')"><div class="icon-box" style="color:#2980b9;">⚙️</div><span>System</span></div>
+                    <div class="app-icon" onclick="openApp('miner-window')"><div class="icon-box" style="background:#2c3e50;color:#f1c40f;">₿</div><span>Miner</span></div>
+                    <div class="app-icon" onclick="openApp('console-window')"><div class="icon-box" style="background:#000;">cmd</div><span>Console</span></div>
+                    
                     <div class="app-icon" onclick="openApp('chrome-window')">
-                        <img src="img/chrome.png" style="width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 5px rgba(0,0,0,0.3);">
+                        <img src="img/chrome.png" style="width:45px;height:45px;border-radius:50%;box-shadow:0 4px 5px rgba(0,0,0,0.3);">
                         <span>Chrome</span>
                     </div>
-                    
-                    <div id="sys-window" class="app-window" style="display: none;">
-                        <div class="app-header"><span>Info</span><span class="close-app" onclick="closeApp('sys-window')">❌</span></div>
-                        <div class="app-body"><p>Система работает стабильно.</p><p>Температура: 45°C</p></div>
+
+                    <div id="sys-window" class="app-window"><div class="app-header"><span>Info</span><span class="close-app" onclick="closeApp('sys-window')">❌</span></div><div class="app-body"><p>Система в норме.</p></div></div>
+
+                    <div id="miner-window" class="app-window miner-theme" style="display:none;">
+                        <div class="app-header"><span>Miner</span><span class="close-app" onclick="closeApp('miner-window')">❌</span></div>
+                        <div class="app-body"><p>Hashrate: <span id="hashrate">0</span></p><p>Доход: <span id="income">0</span></p><button class="mine-btn" onclick="toggleMining()">СТАРТ</button></div>
                     </div>
 
-                    <div id="miner-window" class="app-window miner-theme" style="display: none;">
-                        <div class="app-header"><span>Miner v3.0</span><span class="close-app" onclick="closeApp('miner-window')">❌</span></div>
-                        <div class="app-body">
-                            <div class="miner-stats">
-                                <p>Hashrate: <span id="hashrate" style="color: cyan;">0</span> MH/s</p>
-                                <p>Доход: <span id="income" style="color: lime;">0</span> $/сек</p>
-                            </div>
-                            <button class="mine-btn" onclick="toggleMining()">СТАРТ</button>
-                        </div>
+                    <div id="console-window" class="app-window console-theme" style="display:none;">
+                        <div class="app-header"><span>CMD</span><span class="close-app" onclick="closeApp('console-window')">❌</span></div>
+                        <div class="app-body" id="console-body"><div id="console-history">Microsoft Windows</div><div class="input-line"><span>></span><input type="text" id="console-input"></div></div>
                     </div>
 
-                    <div id="console-window" class="app-window console-theme" style="display: none;">
-                        <div class="app-header"><span>Command Prompt</span><span class="close-app" onclick="closeApp('console-window')">❌</span></div>
-                        <div class="app-body" id="console-body" onclick="document.getElementById('console-input').focus()">
-                            <div class="console-text">Microsoft Windows [Version 10.0.19045]</div>
-                            <br>
-                            <div id="console-history"></div>
-                            <div class="input-line">
-                                <span>C:\User\Admin></span>
-                                <input type="text" id="console-input" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="chrome-window" class="app-window chrome-theme" style="display: none;">
-                        <div class="app-header" style="background: #dee1e6; color: black;">
-                            <span>New Tab - Google Chrome</span>
-                            <span class="close-app" onclick="closeApp('chrome-window')" style="color: black;">❌</span>
-                        </div>
-                        <div style="background: #f1f3f4; padding: 5px; border-bottom: 1px solid #ccc; display: flex; align-items: center;">
-                            <span style="margin: 0 10px; cursor: pointer;">🔄</span>
-                            <input type="text" value="https://www.google.com" style="width: 100%; border-radius: 20px; border: none; padding: 5px 15px; background: white; outline: none; color: #333;" readonly>
-                        </div>
-                        <div class="app-body" style="background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                            <h1 style="font-size: 40px; color: #4285f4; margin: 0;">G<span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></h1>
-                            <div style="margin-top: 20px; width: 80%; max-width: 400px; display: flex;">
-                                <input type="text" placeholder="Search Google or type a URL" style="width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #dfe1e5; outline: none;">
-                            </div>
-                            <p style="margin-top: 50px; color: grey;">(Нет подключения к Интернету)</p>
+                    <div id="chrome-window" class="app-window chrome-theme" style="display:none;">
+                        <div class="app-header" style="background:#dee1e6;color:black;"><span>Google Chrome</span><span class="close-app" onclick="closeApp('chrome-window')" style="color:black;">❌</span></div>
+                        <div style="background:#f1f3f4;padding:5px;border-bottom:1px solid #ccc;display:flex;"><span style="margin:0 10px;">🔄</span><input type="text" value="https://google.com" style="width:100%;border-radius:20px;border:none;padding:5px 10px;" readonly></div>
+                        <div class="app-body" style="background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                            <h1 style="font-size:35px;margin:0;"><span style="color:#4285f4">G</span><span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></h1>
+                            <input type="text" placeholder="Search..." style="margin-top:20px;padding:8px;border-radius:20px;border:1px solid #ccc;width:80%;">
+                            <p style="color:grey;margin-top:30px;font-size:12px;">Нет интернета</p>
                         </div>
                     </div>
 
@@ -150,5 +109,5 @@
         if(savedName) document.getElementById('player-name-display').innerText = "| " + savedName;
     </script>
 </body>
-                                            </html>
-                                
+    </html>
+    
