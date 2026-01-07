@@ -1,4 +1,4 @@
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -80,7 +80,6 @@ function saveToCloud() {
 function loadFromCloud() {
     if(!currentUser) return;
     statusText.innerText = "Загрузка...";
-    
     workbenchContainer.innerHTML = ''; 
     slots.forEach(slot => {
         const item = slot.querySelector('.item');
@@ -115,7 +114,6 @@ function loadFromCloud() {
             statusText.innerText = "Новый аккаунт";
         }
     }).catch((error) => {
-        console.error(error);
         statusText.innerText = "Ошибка загрузки";
     });
 }
@@ -276,18 +274,14 @@ if(consoleInput) {
     consoleInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             const command = consoleInput.value.trim();
-            printToConsole(`> ${command}`);
-            if (command === 'help') printToConsole("Commands: cls, exit");
+            const msg = document.createElement('div'); msg.innerText = `> ${command}`; consoleHistory.appendChild(msg); consoleBody.scrollTop = consoleBody.scrollHeight;
+            if (command === 'help') { const m=document.createElement('div');m.innerText="Commands: cls, exit";consoleHistory.appendChild(m); }
             else if (command === 'cls') consoleHistory.innerHTML = '';
             else if (command === 'exit') window.closeApp('console-window');
-            else printToConsole("Unknown command");
             consoleInput.value = '';
         }
     });
 }
-function printToConsole(text) {
-    const msg = document.createElement('div');
-    msg.innerText = text; consoleHistory.appendChild(msg); consoleBody.scrollTop = consoleBody.scrollHeight;
-}
 
 loadFromCloud();
+   
