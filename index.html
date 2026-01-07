@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>PC Builder Tycoon</title>
     <link rel="stylesheet" href="css/style.css">
-    
     <script>
-        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        if (!sessionStorage.getItem('userName')) {
             window.location.href = "login.html";
         }
     </script>
@@ -16,7 +15,7 @@
 
     <header class="top-bar">
         <div class="logo">PC Sim <span id="player-name-display" style="font-size:10px; color:#bdc3c7;"></span></div>
-        <div class="balance">💰 <span id="money">230</span> $</div>
+        <div class="balance">💰 <span id="money">1500</span> $</div>
         <a href="about.html" class="info-btn">?</a>
     </header>
 
@@ -35,7 +34,7 @@
                 <button class="tab-btn" onclick="filterShop('psu')">БП</button>
             </div>
             
-            <p>Баланс: <span id="shopMoney" style="color: green;">230</span> $</p>
+            <p>Баланс: <span id="shopMoney" style="color: green;">1500</span> $</p>
             <div class="shop-grid" id="shop-container"></div>
         </div>
     </div>
@@ -73,6 +72,10 @@
                         <div class="icon-box" style="background: #000; color: #fff; border: 1px solid #555;">cmd</div>
                         <span>Console</span>
                     </div>
+                    <div class="app-icon" onclick="openApp('chrome-window')">
+                        <img src="img/chrome.png" style="width: 45px; height: 45px; border-radius: 50%; box-shadow: 0 4px 5px rgba(0,0,0,0.3);">
+                        <span>Chrome</span>
+                    </div>
                     
                     <div id="sys-window" class="app-window" style="display: none;">
                         <div class="app-header"><span>Info</span><span class="close-app" onclick="closeApp('sys-window')">❌</span></div>
@@ -86,7 +89,7 @@
                                 <p>Hashrate: <span id="hashrate" style="color: cyan;">0</span> MH/s</p>
                                 <p>Доход: <span id="income" style="color: lime;">0</span> $/сек</p>
                             </div>
-                            <button class="mine-btn" onclick="toggleMining()">СТАРТ / СТОП</button>
+                            <button class="mine-btn" onclick="toggleMining()">СТАРТ</button>
                         </div>
                     </div>
 
@@ -102,6 +105,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div id="chrome-window" class="app-window chrome-theme" style="display: none;">
+                        <div class="app-header" style="background: #dee1e6; color: black;">
+                            <span>New Tab - Google Chrome</span>
+                            <span class="close-app" onclick="closeApp('chrome-window')" style="color: black;">❌</span>
+                        </div>
+                        <div style="background: #f1f3f4; padding: 5px; border-bottom: 1px solid #ccc; display: flex; align-items: center;">
+                            <span style="margin: 0 10px; cursor: pointer;">🔄</span>
+                            <input type="text" value="https://www.google.com" style="width: 100%; border-radius: 20px; border: none; padding: 5px 15px; background: white; outline: none; color: #333;" readonly>
+                        </div>
+                        <div class="app-body" style="background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <h1 style="font-size: 40px; color: #4285f4; margin: 0;">G<span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></h1>
+                            <div style="margin-top: 20px; width: 80%; max-width: 400px; display: flex;">
+                                <input type="text" placeholder="Search Google or type a URL" style="width: 100%; padding: 10px; border-radius: 20px; border: 1px solid #dfe1e5; outline: none;">
+                            </div>
+                            <p style="margin-top: 50px; color: grey;">(Нет подключения к Интернету)</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -118,17 +140,15 @@
             </div>
             <button id="power-btn" class="power-btn disabled" onclick="turnOnPC()">🔌 Включить ПК</button>
         </div>
-
         <a href="about.html" class="bottom-game-info-btn">о игре</a>
-
     </div>
 
     <script src="js2/sounds.js"></script>
-    <script src="js/script.js"></script>
+    <script type="module" src="js/script.js"></script>
     <script>
-        // Небольшой скрипт, чтобы показать имя пользователя из регистрации
         const savedName = sessionStorage.getItem('userName');
         if(savedName) document.getElementById('player-name-display').innerText = "| " + savedName;
     </script>
 </body>
-</html>
+                                            </html>
+                                
